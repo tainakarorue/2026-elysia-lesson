@@ -1,8 +1,22 @@
 import { Elysia } from "elysia";
+import { cors } from "@elysiajs/cors";
 
 import { helloRouter } from "@/server/routes/hello";
 
-export const app = new Elysia({ prefix: "/api" }).use(helloRouter);
+export const app = new Elysia({ prefix: "/api" })
+  .use(
+    cors({
+      origin:
+        process.env.NODE_ENV === "production"
+          ? process.env.NEXT_PUBLIC_APP_URL
+          : true,
+      methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+      credentials: true,
+      allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
+      exposeHeaders: ["Set-Cookie"],
+    })
+  )
+  .use(helloRouter);
 
 export const GET = app.fetch;
 export const POST = app.fetch;

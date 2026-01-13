@@ -1,6 +1,8 @@
 import { Elysia, status, t } from "elysia";
+import { betterAuth, protectedRoute } from "../protected-route";
 
 export const helloRouter = new Elysia({ prefix: "/hello" })
+  .use(betterAuth)
   .get("/", () => {
     const hello = "Hello Elysia";
 
@@ -17,4 +19,5 @@ export const helloRouter = new Elysia({ prefix: "/hello" })
     body: t.Object({
       name: t.String(),
     }),
+    auth: true,
   });

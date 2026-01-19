@@ -2,6 +2,7 @@ import { Elysia } from "elysia";
 import { cors } from "@elysiajs/cors";
 
 import { helloRouter } from "@/server/routes/hello";
+import { postsRouter } from "@/server/routes/posts";
 
 export const app = new Elysia({ prefix: "/api" })
   .use(
@@ -16,7 +17,8 @@ export const app = new Elysia({ prefix: "/api" })
       exposeHeaders: ["Set-Cookie"],
     })
   )
-  .use(helloRouter);
+  .use(helloRouter)
+  .use(postsRouter);
 
 export const GET = app.fetch;
 export const POST = app.fetch;

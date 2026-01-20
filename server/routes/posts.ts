@@ -3,6 +3,7 @@ import { and, eq } from "drizzle-orm";
 
 import { db } from "@/src";
 import { posts } from "@/src/db/schema";
+import { createPostInsertSchema, updatePostInsertSchema } from "@/types/posts";
 
 import { betterAuth } from "../protected-route";
 
@@ -34,7 +35,7 @@ export const postsRouter = new Elysia({ prefix: "/posts" })
       params: t.Object({
         id: t.String(),
       }),
-    }
+    },
   )
   .post(
     "/",
@@ -58,9 +59,14 @@ export const postsRouter = new Elysia({ prefix: "/posts" })
       return data;
     },
     {
-      //todo: add body type
+      body: t.Omit(createPostInsertSchema, [
+        "id",
+        "userId",
+        "createdAt",
+        "updatedAt",
+      ]),
       auth: true,
-    }
+    },
   )
   .patch(
     "/:id",
@@ -85,12 +91,17 @@ export const postsRouter = new Elysia({ prefix: "/posts" })
       return updatedPost;
     },
     {
-      //todo: add body type
+      body: t.Omit(updatePostInsertSchema, [
+        "id",
+        "userId",
+        "createdAt",
+        "updatedAt",
+      ]),
       auth: true,
       params: t.Object({
         id: t.String(),
       }),
-    }
+    },
   )
   .delete(
     "/:id",
@@ -114,5 +125,5 @@ export const postsRouter = new Elysia({ prefix: "/posts" })
       params: t.Object({
         id: t.String(),
       }),
-    }
+    },
   );
